@@ -1,0 +1,80 @@
+img{
+    width: 1rem;
+    color: white;
+}
+button{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 40%;
+    margin-top: 1rem;
+    border: 0px;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    background-color: rgb(114, 228, 0);
+}
+button:hover{
+    cursor: pointer;
+    background-color: rgb(100, 199, 0);
+}
+button:active{
+    background-color: rgb(86, 171, 0);
+}
+.calendar-container{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    width: clamp(460px, 80vw, 600px);
+    height: clamp(230px, 80vw, 300px);
+    padding: 0%;
+    border: solid #000;
+    border-width: 1%;
+    border-radius: 3%;
+}
+.calendar-header{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: chartreuse;
+    justify-content: space-between;
+    color: white;
+    border-radius: 5%;
+}
+.calendar-week{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    align-items: center;
+    width: clamp(460px, 80vw, 600px);
+    padding: 0;
+}
+.calendar-week li{
+    display: inline-block;
+    font-size: clamp(1rem, 1vw, 3rem);
+    width: 13.6%;
+    text-align: center;
+    padding: 0;
+}
+.month-dates{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style: none;
+    align-items: center;
+    width: clamp(460px, 80vw, 600px);
+    padding: 0;
+}
+.month-dates li{
+    display: inline-block;
+    width: 13.6%;
+    text-align: center;
+    padding: 0;
+    font-size: 1.5rem;
+    padding: 0;
+    cursor: pointer;
+}
+.month-dates li:hover{
+    background-color: rgb(208, 208, 208);
+}
+.month-dates li:active{
+    background-color: rgb(162, 162, 162);
+}
