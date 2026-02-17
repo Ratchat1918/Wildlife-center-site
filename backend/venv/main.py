@@ -23,19 +23,11 @@ except:
 
 db = client['Users']
 collection = db['client']
-
-class duplicateError(Exception):
-    def __init__(self, message, error_code):
-        super().__init__(message)
-        self.message = message  # Add this line
-        self.error_code = error_code
-    def __str__(self):
-        return f"{self.message} (Error Code: {self.error_code})"
     
-class userIsNullError(Exception):
+class customError(Exception):
     def __init__(self, message, error_code):
         super().__init__(message)
-        self.message = message  # Add this line
+        self.message = message
         self.error_code = error_code
     def __str__(self):
         return f"{self.message} (Error Code: {self.error_code})"
@@ -100,10 +92,10 @@ def add_resarvation(user_id):
     try:
         user = collection.find_one({"_id":user_id})
         if(user==None):
-            raise userIsNullError("user is Null", 400)
-        duplicate = dates_collection.find_one({"date":resarvation_data["date"]})
-        if(duplicate!=None):
-            raise duplicateError("duplicate date",400)
+            raise customError("user is Null", 400)
+        #duplicate = dates_collection.find_one({"date":resarvation_data["date"]})
+        #if(duplicate!=None):
+        #    raise duplicateError("duplicate date",400)
         resarvation_id = dates_collection.count_documents({})+1
         dates_collection.insert_one({
             '_id':resarvation_id,
@@ -113,6 +105,19 @@ def add_resarvation(user_id):
         return f"users resarvations updated succesfully"
     except Exception as e:
         return f'failed to create resarvation, error: {e}'
+    
+@app.route('/delete_resarvations/<int:user_id>/<int:resarvation_id>', methods = ['GET', 'DELETE'])
+def delete_resarvations(user_id, resarvation_id):
+    try:
+        user = collection.find_one({"_id":user_id})
+        user_resarvations = user["reservations"]
+        if(resarvation_id not in user_resarvations):
+            raise customError("Resarvation not in user",404)
+        dates_collection.find_one_and_delete({"_id":resarvation_id})
+        collection.update_one({"_id":user_id}, {"$pull":{"reservations": resarvation_id}})
+        return "deleted resarvation succesfully"
+    except Exception as e:
+        return f"failed to delete resarvation, error: {e}"
 
 if __name__ == '__main__':
     app.run()
