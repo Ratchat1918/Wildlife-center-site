@@ -2,21 +2,20 @@ img{
     width: 1rem;
     color: white;
 }
-button{
+.calendar-button{
     width: 3rem;
     height: 3rem;
-    border-radius: 40%;
     margin-top: 1rem;
     border: 0px;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     background-color: rgb(114, 228, 0);
 }
-button:hover{
+.calendar-button:hover{
     cursor: pointer;
     background-color: rgb(100, 199, 0);
 }
-button:active{
+.calendar-button:active{
     background-color: rgb(86, 171, 0);
 }
 .calendar-container{
@@ -28,7 +27,6 @@ button:active{
     padding: 0%;
     border: solid #000;
     border-width: 1%;
-    border-radius: 3%;
 }
 .calendar-header{
     display: flex;
@@ -37,7 +35,6 @@ button:active{
     background-color: chartreuse;
     justify-content: space-between;
     color: white;
-    border-radius: 5%;
 }
 .calendar-week{
     display: flex;

@@ -4,6 +4,8 @@ const Calendar =()=>{
     const weekDay=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday",];
     const monthList=["January","February","March","April","May","June","July","August","September","October","November","December"];
     let monthDaysList=[];
+    let current_date = new Date().getDate();
+    console.log(current_date)
     let month = new Date().getMonth();
     let year = new Date().getFullYear();
     const [currentMonth, setCurrentMonth] = useState(month); 
@@ -32,15 +34,17 @@ const Calendar =()=>{
     <>
     <div className="calendar-container">
         <header className="calendar-header" >
-            <button onClick={()=>monthBackwards(currentMonth)}><img src='/src/assets/arrowLeft.svg'></img></button>
+            <button className='calendar-button' onClick={()=>monthBackwards(currentMonth)}><img src='/src/assets/arrowLeft.svg'></img></button>
             <h1>{monthList[currentMonth]} {currentYear}</h1>
-            <button onClick={()=>monthForward(currentMonth)}><img src='/src/assets/arrowRight.svg'></img></button>
+            <button className='calendar-button' onClick={()=>monthForward(currentMonth)}><img src='/src/assets/arrowRight.svg'></img></button>
         </header>
         <ul className="calendar-week">
             {weekDay.map((day)=><li key={day}>{day}</li>)}
         </ul>
         <ul className="month-dates">
-            {monthDaysList.map((date)=><li key={`${monthList[currentMonth]}_${date}`} onClick={()=>console.log(date,currentMonth,currentYear)}>{date}</li>)}
+            {monthDaysList.map((date)=>(
+                <li key={`${monthList[currentMonth]}_${date}`} onClick={()=>console.log(date,currentMonth,currentYear)}>{date}</li>
+                ))}
         </ul>
     </div>
     </>
