@@ -1,4 +1,4 @@
-import '/src/styles/Login.css'
+import '../style.css'
 import { useState, useEffect, use } from "react"
 import { logIn } from '../utils'
 
@@ -15,27 +15,55 @@ const Login = () =>{
             return false
         }
         };
-    const validatePassword = (password:String) => {
+    const passwordSymbols =(password:String) =>{
         const specialSymbols = ["@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "+", "=", "!", "?", "<", ">", "/", "\\", "|", "~", "`"];
-        const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-        let hasSpecialSymbol = specialSymbols.some(symbol => password.includes(symbol));
-        let hasNumber = numbers.some(number => password.includes(number));
-        if(hasSpecialSymbol && hasNumber && password.length >= 10 && password.length<=16){
-            return true;
-        }
-        return false;
+        let hasSpecialSymbol: boolean = specialSymbols.some(symbol => password.includes(symbol));
+        return hasSpecialSymbol
     }
+    const passwordNumbers =(password:String) =>{
+        const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        let hasNumber:boolean = numbers.some(number => password.includes(number));
+        return hasNumber
+    }
+
     useEffect(()=>{
         const emailValid:boolean = validateEmail(email)
-        const passwordValid: boolean = validatePassword(password)
-        const submitBtn: HTMLInputElement = document.getElementById("loginSubmit")
+        const submitBtn = document.getElementById("loginSubmit") as HTMLInputElement;
+        if (!submitBtn) return;
+        const emailError = document.getElementById("emailError") as HTMLDivElement;
+        const passwordError = document.getElementById("passwordError") as HTMLDivElement;
+        let passwordHasNumbers:boolean = passwordNumbers(password);
+        let passwordHasSymbols:boolean = passwordSymbols(password);
         if(emailValid==false){
             submitBtn.className="login-submit";
+            if(email.length>0){
+                emailError.innerText = "Enter valid email"
+            }
         }
-        if(passwordValid==false){
+        if(passwordHasNumbers==false){
             submitBtn.className="login-submit";
+            if(password.length>0){
+                passwordError.innerText = "Password must contain at least one number"
+            }
         }
-        if(emailValid && passwordValid){
+        if(passwordHasSymbols==false){
+            submitBtn.className="login-submit";
+            if(password.length>0){
+                passwordError.innerText = "Password must contain at least one special symbol"
+            }
+        }
+        if(password.length<10){
+            submitBtn.className="login-submit";
+            if(password.length>0){
+                passwordError.innerText = "Password must be at least 10 characters long"
+            }
+        }else if(password.length>20){
+            submitBtn.className="login-submit";
+            if(password.length>0){
+                passwordError.innerText = "Password must be no more than 20 characters long"
+            }
+        }
+        if(emailValid && passwordHasSymbols && passwordHasNumbers){
             submitBtn.className="login-submit-active";
         }
     },[email, password])
@@ -48,10 +76,10 @@ const Login = () =>{
             <form className='login-form' onSubmit={logIntoAccount}>
                 <label className='login-label' htmlFor="emailInput">Email</label>
                 <input id='emailInput' className='login-input' type="text" value={email} onChange={(event)=>setEmail(event.target.value)}></input>
-                <div className='emailError'></div>
+                <div id='emailError'></div>
                 <label className='login-label' htmlFor="passwordInput">Password</label>
                 <input id='passwordInput' className='login-input' type="text" value={password} onChange={(event)=>setPassword(event.target.value)}></input>
-                <div className='passwordError'></div>
+                <div id='passwordError'></div>
                 <input id='loginSubmit' className='login-submit' value={"Login"} type="submit"></input>
             </form>
         </div>

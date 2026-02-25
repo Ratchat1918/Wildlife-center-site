@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '/src/styles/Calendar.css';
+import '../style.css'
 const Calendar =()=>{
     const weekDay=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday",];
     const monthList=["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -34,9 +34,9 @@ const Calendar =()=>{
     <>
     <div className="calendar-container">
         <header className="calendar-header" >
-            <button className='calendar-button' onClick={()=>monthBackwards(currentMonth)}><img src='/src/assets/arrowLeft.svg'></img></button>
+            <button className='calendar-button' onClick={()=>monthBackwards(currentMonth)}><img className='arrows' src='/src/assets/arrowLeft.svg'></img></button>
             <h1>{monthList[currentMonth]} {currentYear}</h1>
-            <button className='calendar-button' onClick={()=>monthForward(currentMonth)}><img src='/src/assets/arrowRight.svg'></img></button>
+            <button className='calendar-button' onClick={()=>monthForward(currentMonth)}><img className='arrows' src='/src/assets/arrowRight.svg'></img></button>
         </header>
         <ul className="calendar-week">
             {weekDay.map((day)=><li key={day}>{day}</li>)}
