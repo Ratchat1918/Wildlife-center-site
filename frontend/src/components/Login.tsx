@@ -1,10 +1,14 @@
 import '../style.css'
-import { useState, useEffect, use } from "react"
+import Navbar from './Navbar'
+import Footer from './Footer'
+import { useState, useEffect } from "react"
 import { logIn } from '../utils'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Login = () =>{
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const navigate = useNavigate();
     const validateEmail = (email:String) => {
         if(String(email)
             .toLowerCase()
@@ -65,13 +69,23 @@ const Login = () =>{
         }
         if(emailValid && passwordHasSymbols && passwordHasNumbers){
             submitBtn.className="login-submit-active";
+            emailError.innerText = ""
+            passwordError.innerText = ""
         }
     },[email, password])
-    const logIntoAccount = (event:any)=>{
+    const logIntoAccount = async (event:any)=>{
         event.preventDefault()
-        console.log("Logging in with email: ", email, " and password: ", password)
+        let response = await logIn(email, password);
+        console.log(response)
+        if(response){
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("userId", response.data.user_id);
+            navigate("/");
+        }
     }
     return(
+        <>
+        <Navbar></Navbar>
         <div className='login-container'>
             <form className='login-form' onSubmit={logIntoAccount}>
                 <label className='login-label' htmlFor="emailInput">Email</label>
@@ -81,8 +95,11 @@ const Login = () =>{
                 <input id='passwordInput' className='login-input' type="text" value={password} onChange={(event)=>setPassword(event.target.value)}></input>
                 <div id='passwordError'></div>
                 <input id='loginSubmit' className='login-submit' value={"Login"} type="submit"></input>
+                <Link className='login-link' to='/regestration'>Don't have an account? Register here</Link>
             </form>
         </div>
+        <Footer></Footer>
+        </>
     )
 }
 export default Login;

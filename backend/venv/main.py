@@ -12,6 +12,7 @@ from datetime import datetime, timezone, timedelta
 import re
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 bcrypt=Bcrypt(app)
 
 load_dotenv()
@@ -78,8 +79,14 @@ def add_user():
             raise customError("invalid email",400)
         if(validate_password(data["password"])==False):
             raise customError("invalid password",400)
+        if(len(data["first_name"])<2 or len(data["first_name"])>20):
+            raise customError("invalid first name",400)
+        if(len(data["last_name"])<2 or len(data["last_name"])>20):
+            raise customError("invalid last name",400)
         hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
         client_collection.insert_one({
+            "first_name": data["first_name"],
+            "last_name": data["last_name"],
             "email": data["email"],
             "password":hashed_password,
             "reservations":[]
@@ -112,7 +119,7 @@ def delete_user(user_id):
     except Exception as e:
         return f"failed to delete user, error: {e}"
     
-@app.route('/login', methods = ['GET'])
+@app.route('/login', methods = ['POST'])
 def login():
     data =request.json
     request_email = data["email"]
