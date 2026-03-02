@@ -10,11 +10,10 @@ html, body {
     margin: 0%;
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: auto auto auto auto;
+    grid-template-rows: auto 1fr auto;
     grid-template-areas: 
         "navbar"
-        "login"
-        "calendar"
+        "main"
         "footer";
     font-family: Montserrat, monospace;
 }
@@ -25,7 +24,6 @@ html, body {
     background-color: #33ce00;
     padding: 0;
     width: 100%;
-    margin-bottom: 1rem;
 }
 .navbar-container ul{
     display: flex;
@@ -46,12 +44,11 @@ ul .navbar-link:first-child{
 /*Footer*/
 .footer-container{
     grid-area: footer;
-    min-height: 32px;
+    height: 100%;
     background-color: #259400;
     padding: 0;
     width: 100%;
     margin-bottom: 0;
-    margin-top: 1rem;
 }
 .footer-container ul{
     display: flex;
@@ -66,10 +63,87 @@ ul .navbar-link:first-child{
     text-decoration: none;
     margin: 1em;
 }
+/*About*/
+.about-container{
+    grid-area: main;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 360px auto;
+    grid-template-areas: 
+    "carousel carousel"
+    "text ticket";
+}
+.about-block{
+    grid-area: carousel;
+    width: 100%;
+    position: relative;
+}
+.block-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  
+}
+.block-text{
+    position: absolute;
+    color: rgb(246, 246, 246);
+    font-size: clamp(1rem, 1.75vw, 2rem);
+    text-shadow: 1px 1px 2px black;
+    padding: 1rem;
+}
+.about-info{
+    grid-area: text;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    flex: 1;
+}
+.ticket-container{
+    grid-area: ticket;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    align-items: center;
+}
+.ticket-container h1{
+    margin-right: auto;
+}
+.ticket-btn{
+    background-color: #1b6b00;
+    border: 0;
+    width: max(200px, 20%);
+    border-radius: 50%;
+    text-decoration: none;
+    color: rgb(246, 246, 246);
+    font-size: medium;
+    margin-top: 1rem;
+}
+.ticket-btn:hover{
+    background-color: #103e00;
+    cursor: pointer;
+}
+.carousel-arrow{
+    display: flex;
+    gap: 1rem;
+    position: absolute;
+    top: 90%;
+    left: 90%;
+    background-color: transparent;
+    border: 0;
+}
+.carousel-arrow img{
+    padding: 0;
+    gap: 1rem;
+    width: 2rem;
+    height: 2rem;
+}
+.carousel-arrow:hover{
+    cursor: pointer;
+}
 
 /*Login*/
 .login-container{
-    grid-area: login;
+    grid-area: main;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -84,7 +158,7 @@ ul .navbar-link:first-child{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: max(200px, 60%);
+    width: max(200px, 60vw);
     max-width: 400px;
 }
 .login-input{
@@ -136,7 +210,7 @@ ul .navbar-link:first-child{
 
 /*Regestration*/
 .regestration-container{
-    grid-area: login;
+    grid-area: main;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -151,7 +225,7 @@ ul .navbar-link:first-child{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: max(200px, 60%);
+    width: max(200px, 60vw);
     max-width: 400px;
 }
 .regestration-input{
@@ -225,7 +299,7 @@ ul .navbar-link:first-child{
     background-color: #238d00;
 }
 .calendar-container{
-    grid-area: calendar;
+    grid-area: main;
     display: grid;
     flex-direction: column;
     background-color: rgb(246, 246, 246);
@@ -255,7 +329,7 @@ ul .navbar-link:first-child{
 .calendar-week li{
     display: grid;
     text-align: center;
-    font-size: 100%;
+    font-size: clamp(0.5rem, 3vw, 1rem);
     padding: 0;
 }
 .month-dates{
