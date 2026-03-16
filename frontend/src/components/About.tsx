@@ -1,50 +1,30 @@
-
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import '../style.css'
-import resource1 from  '../assets/resource1.jpg'
-import resource2 from  '../assets/resource2.jpg'
-import resource3 from '../assets/resource3.jpg'
+//import resource1 from  '../assets/resource1.jpg'
+//import resource2 from  '../assets/resource2.jpg'
+//import resource3 from '../assets/resource3.jpg'
 
 const About = () =>{
-    const resources = [resource1, resource2, resource3];
-    const aboutText =[
-        'Lorem1 ipsum dolor sit amet consectetur adipisicing elit. Eveniet, officiis modi. Temporibus labore quis eos nulla reprehenderit deserunt voluptatibus, veniam architecto dolorem, maiores rerum assumenda, odio illo ratione? Necessitatibus, doloribus?',
-        'Lorem2 ipsum dolor sit amet consectetur adipisicing elit. Eveniet, officiis modi. Temporibus labore quis eos nulla reprehenderit deserunt voluptatibus, veniam architecto dolorem, maiores rerum assumenda, odio illo ratione? Necessitatibus, doloribus?',
-        'Lorem3 ipsum dolor sit amet consectetur adipisicing elit. Eveniet, officiis modi. Temporibus labore quis eos nulla reprehenderit deserunt voluptatibus, veniam architecto dolorem, maiores rerum assumenda, odio illo ratione? Necessitatibus, doloribus?'
-    ]
-    const [currentText, setCurrentText] = useState(0);
-    const [currentResource, setCurrentResource] = useState(0);
-    function arrowLeftClick(){
-        if(currentResource > 0){
-            setCurrentText(aboutText.length - 1);
-            setCurrentResource(resources.length - 1);
-        } else {
-            setCurrentResource(2);
-            setCurrentText(2)
-        }
-    }
-    function arrowRightClick(){
-        if(currentResource < 2){
-            setCurrentResource(currentResource + 1);
-            setCurrentText(currentText + 1);
-        } else {
-            setCurrentResource(0);
-            setCurrentText(0);
-        }
-    }
-
+    const navigate = useNavigate();
+    const [slides, setSlides] = useState([
+        {"id":"slide1","h1":"Header 1", "p":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque inventore id nihil. Distinctio vero, eaque facilis adipisci sit, aliquam aspernatur quaerat eveniet dignissimos dolorum esse ipsa, placeat quos voluptate. Natus!"},
+        {"id":"slide2","h1":"Header 2", "p":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque inventore id nihil. Distinctio vero, eaque facilis adipisci sit, aliquam aspernatur quaerat eveniet dignissimos dolorum esse ipsa, placeat quos voluptate. Natus!"},
+        {"id":"slide3","h1":"Header 3", "p":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque inventore id nihil. Distinctio vero, eaque facilis adipisci sit, aliquam aspernatur quaerat eveniet dignissimos dolorum esse ipsa, placeat quos voluptate. Natus!"},
+    ])
     return(
         <>
         <div className="about-container">
-            <div className='about-block' id='block1'>
-                <div className='block-text'>
-                    <h1>Block 1 header</h1>
-                    <p>{aboutText[currentText]}</p>
+            <div className='slides-container'>
+                <div className='slide-group'>
+                    {slides.map((slide)=><div key={`key_${Math.random()}`} className='slide' id={slide.id}>
+                        <h1>{slide.h1}</h1>
+                        <p>{slide.p}</p>
+                    </div>)}
                 </div>
-                <button className='carousel-arrow' id='carousel-arrow-left'><img src='/src/assets/arrowLeft.svg'></img></button>
-                <button className='carousel-arrow' id='carousel-arrow-right'><img src='/src/assets/arrowRight.svg'></img></button>
-                <img className='block-img' src={resources[currentResource]}></img>
             </div>
+            <button className='scroll-btn left' onClick={() => document.querySelectorAll('.slides-container')[0]?.scrollBy({ left: -1000, behavior: 'smooth' })}><img className='arrows' src='/src/assets/arrowLeft.svg' alt="Left arrow"/></button>
+            <button className='scroll-btn right' onClick={() => document.querySelectorAll('.slides-container')[0]?.scrollBy({ left: 1000, behavior: 'smooth' })}><img className='arrows' src='/src/assets/arrowRight.svg' alt="Right arrow"/></button>
             <div className='about-info' >
                 <h1>About us</h1>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet, officiis modi.
@@ -53,7 +33,7 @@ const About = () =>{
             </div>
             <div className='ticket-container' >
                 <h1>Tickets</h1>
-                <button className='ticket-btn'>Buy tickets</button>
+                <button className='ticket-btn' onClick={() => navigate('/tickets')}>Buy tickets</button>
             </div>
         </div>
         </>

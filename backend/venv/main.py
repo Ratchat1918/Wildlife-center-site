@@ -144,7 +144,12 @@ def login():
 def get_resarvations():
     try:
         data = dates_collection.find({})
-        response = make_response(f"Resarvations: {dumps(data)}", 200)
+        data_array = []
+        for x in data:
+            data_array.append(x)
+        print(data_array)
+        response = make_response(dumps(data_array), 200)
+        print(response)
         return response
     except Exception as e:
         return f"failed to fetch dates, error: {e}"

@@ -20,7 +20,7 @@ html, body {
 /*Navbar*/
 .navbar-container{
     grid-area: navbar;
-    max-height: 80px;
+    max-height: 96px;
     background-color: #33ce00;
     padding: 0;
     width: 100%;
@@ -35,6 +35,15 @@ ul .navbar-link:first-child{
     margin-right: auto;
 }
 .navbar-container .navbar-link{
+    color: rgb(246, 246, 246);
+    font-size: 1em;
+    text-decoration: none;
+    margin: 1em;
+}
+.navbar-container .navbar-link:hover{
+    text-decoration: underline;
+}
+.navbar-container p{
     color: rgb(246, 246, 246);
     font-size: 1em;
     text-decoration: none;
@@ -69,27 +78,76 @@ ul .navbar-link:first-child{
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 360px auto;
+    grid-template-rows: auto auto;
     grid-template-areas: 
     "carousel carousel"
     "text ticket";
 }
-.about-block{
+.slides-container{
     grid-area: carousel;
-    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
     position: relative;
+    anchor-name:  --carousel;
+    scroll-snap-type: x mandatory;
 }
-.block-img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;  
+.slides-container::-webkit-scrollbar{
+    display: none;
 }
-.block-text{
-    position: absolute;
-    color: rgb(246, 246, 246);
-    font-size: clamp(1rem, 1.75vw, 2rem);
-    text-shadow: 1px 1px 2px black;
+.slide-group{
+    scroll-snap-type: x mandatory;
+    display: flex;
+}
+.slide{
+    width: 100vw;
+    max-height: 60vh;
+    background-color: rgb(194, 253, 233);
+    border: white solid 1px;
+    scroll-snap-align: start;
+}
+.slide h1{
+    display: flex;
+    flex-wrap: wrap;
     padding: 1rem;
+}
+.slide p{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem;
+}
+.scroll-btn {
+    position: fixed;
+    bottom: 1rem;
+    width: 3rem;
+    height: 3rem;
+    background: #33ce00;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    cursor: pointer;
+    position-anchor: --carousel;
+}
+.scroll-btn:hover{
+    opacity: 0.8;
+}
+.scroll-btn:disabled{
+    opacity: 0.1;
+    cursor: auto;
+}
+.scroll-btn.left {
+    right: 5.5rem;
+    position-area: right center;
+    translate: -150% 150%;
+}
+
+.scroll-btn.right {
+    right: 1rem;
+    position-area: right center;
+    translate: -20% 150%;
 }
 .about-info{
     grid-area: text;
@@ -103,15 +161,11 @@ ul .navbar-link:first-child{
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    align-items: center;
-}
-.ticket-container h1{
-    margin-right: auto;
 }
 .ticket-btn{
     background-color: #1b6b00;
     border: 0;
-    width: max(200px, 20%);
+    width: max(100px, 40%);
     border-radius: 50%;
     text-decoration: none;
     color: rgb(246, 246, 246);
@@ -120,24 +174,6 @@ ul .navbar-link:first-child{
 }
 .ticket-btn:hover{
     background-color: #103e00;
-    cursor: pointer;
-}
-.carousel-arrow{
-    display: flex;
-    gap: 1rem;
-    position: absolute;
-    top: 90%;
-    left: 90%;
-    background-color: transparent;
-    border: 0;
-}
-.carousel-arrow img{
-    padding: 0;
-    gap: 1rem;
-    width: 2rem;
-    height: 2rem;
-}
-.carousel-arrow:hover{
     cursor: pointer;
 }
 
@@ -275,7 +311,95 @@ ul .navbar-link:first-child{
     box-shadow: 1 2px 4px rgba(35, 35, 66, 0.149), 0 1px 0 rgba(0, 0, 0, .02);
 }
 
-/*Calendar*/
+/*Calendar and adjacent stuff*/
+.tickets-container{
+    grid-area: main;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.calendar-container{
+    display: grid;
+    flex-direction: column;
+    background-color: rgb(246, 246, 246);
+    padding: 0%;
+    border: solid #000;
+    margin-top: 2.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 60vh;
+}
+.calendar-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    background-color: #33ce00;
+    justify-content: space-between;
+    color: rgb(246, 246, 246);
+    margin: 0;
+}
+.calendar-week{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    list-style: none;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+.calendar-week li{
+    display: grid;
+    text-align: center;
+    font-size: clamp(0.5rem, 3vw, 1rem);
+    padding: 0;
+    margin: 0;
+    max-height: 0.25rem;
+    height: 100%;
+}
+.month-dates{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    list-style: none;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+.calendar-date{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding: 0;
+    font-size: 1.5rem;
+    padding: 0;
+    cursor: pointer;
+}
+.calendar-date-past{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding: 0;
+    font-size: 1.5rem;
+    padding: 0;
+    background-color: rgb(0, 0, 0);
+    color: white;
+}
+.calendar-date-chosen{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding: 0;
+    font-size: 1.5rem;
+    padding: 0;
+    cursor: pointer;
+    background-color: rgb(0, 10, 124);
+    color: white;
+}
+.calendar-date:hover{
+    background-color: rgb(208, 208, 208);
+}
+.calendar-date:active{
+    background-color: rgb(162, 162, 162);
+}
 .arrows{
     width: 1rem;
     height: 1rem;
@@ -298,58 +422,9 @@ ul .navbar-link:first-child{
 .calendar-button:active{
     background-color: #238d00;
 }
-.calendar-container{
+
+/*Account*/
+.account-container{
     grid-area: main;
-    display: grid;
-    flex-direction: column;
-    background-color: rgb(246, 246, 246);
-    padding: 0%;
-    border: solid #000;
-    border-width: 1%;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    margin-left: auto;
-    margin-right: auto;
-}
-.calendar-header{
     display: flex;
-    flex-direction: row;
-    width: 100%;
-    background-color: #33ce00;
-    justify-content: space-between;
-    color: rgb(246, 246, 246);
-}
-.calendar-week{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    list-style: none;
-    align-items: center;
-    padding: 0;
-}
-.calendar-week li{
-    display: grid;
-    text-align: center;
-    font-size: clamp(0.5rem, 3vw, 1rem);
-    padding: 0;
-}
-.month-dates{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    list-style: none;
-    align-items: center;
-    padding: 0;
-    gap: 1rem;
-}
-.month-dates li{
-    text-align: center;
-    padding: 0;
-    font-size: 1.5rem;
-    padding: 0;
-    cursor: pointer;
-}
-.month-dates li:hover{
-    background-color: rgb(208, 208, 208);
-}
-.month-dates li:active{
-    background-color: rgb(162, 162, 162);
 }
